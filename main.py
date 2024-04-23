@@ -178,7 +178,7 @@ def main():
                 # Validar que no haya respuestas vacías o "Selecciona una opción"
                 if any(value == 'Selecciona una opción' or value == '' for value in datos.values()):
                     st.error("Falta información. Por favor complete todas las preguntas.")
-                #else:
+                else:
                     # Generar clave secreta AES
                     secret_key = get_random_bytes(32)
         
