@@ -17,7 +17,7 @@ import io
 
 def main():
     # Crear barra lateral para la selección de la opción
-    link_llaves = "/Llaves/"
+    link_llaves = "llaves/"
     option = st.sidebar.selectbox('Selecciona una opción', ('Cuestionario', 'Consulta de Información'))
 
     if option == 'Cuestionario':        
