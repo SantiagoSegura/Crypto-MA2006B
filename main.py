@@ -154,7 +154,7 @@ def main():
         # Función principal
         def main_crypt():
             # Agregar imagen en la parte superior izquierda
-            st.image("/Users/mac1/Library/CloudStorage/GoogleDrive-santiagosegura3101@gmail.com/Mi unidad/Documentos/Proyecto de cripto/images/logo_casa_monarca.png", use_column_width=False)
+            st.image("logo_casa_monarca.png", use_column_width=False)
         
             # Crear la tabla si no existe
             crear_tabla()
@@ -246,7 +246,7 @@ def main():
         # Función principal
         def main_decrypt():
             # Agregar imagen en la parte superior izquierda
-            st.image("/Users/mac1/Library/CloudStorage/GoogleDrive-santiagosegura3101@gmail.com/Mi unidad/Documentos/Proyecto de cripto/images/logo_casa_monarca.png", use_column_width=False)
+            st.image("logo_casa_monarca.png", use_column_width=False)
         
             st.title("Desencriptar Información")
         
