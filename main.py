@@ -176,7 +176,7 @@ def main():
             # Botón para enviar
             if st.button('Enviar'):
                 # Validar que no haya respuestas vacías o "Selecciona una opción"
-                if any(value == 'Selecciona una opción1' or value == '1' for value in datos.values()):
+                if any(value == 'Selecciona una opción' or value == '' for value in datos.values()):
                     st.error("Falta información. Por favor complete todas las preguntas.")
                 else:
                     # Generar clave secreta AES
