@@ -17,7 +17,7 @@ import io
 
 def main():
     # Crear barra lateral para la selección de la opción
-    link_llaves = "/Users/mac1/Library/CloudStorage/GoogleDrive-santiagosegura3101@gmail.com/Mi unidad/Documentos/Proyecto de cripto/Llaves"
+    link_llaves = "/Llaves/"
     option = st.sidebar.selectbox('Selecciona una opción', ('Cuestionario', 'Consulta de Información'))
 
     if option == 'Cuestionario':        
