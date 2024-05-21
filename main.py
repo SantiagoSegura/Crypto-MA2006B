@@ -52,9 +52,17 @@ def main():
     
         # Función para descargar la llave privada AES
         def descargar_llave_privada(secret_key, nombre_usuario):
+            # Crear el contenido del archivo como bytes
             nombre_archivo = f"llave_privada_{nombre_usuario}.txt"
-            with open(nombre_archivo, "wb") as f:
-                f.write(secret_key)
+            contenido_archivo = secret_key
+    
+            # Crear un botón de descarga en la interfaz web
+            st.download_button(
+                label="Descargar llave privada",
+                data=contenido_archivo,
+                file_name=nombre_archivo,
+                mime='text/plain'
+            )
         
         
         
