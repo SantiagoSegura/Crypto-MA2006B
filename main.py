@@ -50,11 +50,10 @@ def main():
             conn.close()
         
         # Función para descargar la llave privada AES
-        def descargar_llave_privada(secret_key, nombre_usuario):
-            ruta = os.path.join(link_llaves, nombre_usuario)
-            os.makedirs(ruta, exist_ok=True)
-            with open(os.path.join(ruta, "llave_privada.txt"), "wb") as f:
-                f.write(secret_key)
+       def descargar_llave_privada(secret_key, nombre_usuario):
+           nombre_archivo = f"llave_privada_{nombre_usuario}.txt"
+           with open(nombre_archivo, "wb") as f:
+               f.write(secret_key)
         
         
         
