@@ -48,13 +48,13 @@ def main():
             c.execute("INSERT INTO formularios (nombre_usuario, iv, formulario_cifrado) VALUES (?, ?, ?)", (nombre_usuario, iv, ciphertext,))
             conn.commit()
             conn.close()
-        
+
+    
         # Función para descargar la llave privada AES
-       def descargar_llave_privada(secret_key, nombre_usuario):
-           nombre_archivo = f"llave_privada_{nombre_usuario}.txt"
-           with open(nombre_archivo, "wb") as f:
-               f.write(secret_key)
-        
+        def descargar_llave_privada(secret_key, nombre_usuario):
+            nombre_archivo = f"llave_privada_{nombre_usuario}.txt"
+            with open(nombre_archivo, "wb") as f:
+                f.write(secret_key)
         
         
         
