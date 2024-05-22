@@ -240,10 +240,6 @@ def main():
         
             # Recolectar datos del formulario
             nombre_usuario = st.text_input('Nombre completo')
-            fecha = datos["fecha_atencion"]
-            genero = datos["sexo"]
-            
-            
         
             datos = preguntas_cuestionario()
         
@@ -269,7 +265,7 @@ def main():
                     iv, ciphertext = cifrar_datos(datos, secret_key)
         
                     # Guardar JSON cifrado en la base de datos
-                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, fecha, genero)
+                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, datos["fecha_atencion"], datos["sexo"])
         
                     # Descargar la llave privada
                     descargar_llave_privada(secret_key, nombre_usuario)
