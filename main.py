@@ -2,6 +2,7 @@
 
 import json
 import sqlite3
+import mysql.connector
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from Crypto.Random import get_random_bytes
@@ -12,8 +13,6 @@ import base64
 from Crypto.Util.Padding import unpad
 from PIL import Image
 import io
-
-
 
 def main():
     # Crear barra lateral para la selección de la opción
