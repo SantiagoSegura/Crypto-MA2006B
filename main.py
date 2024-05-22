@@ -1,4 +1,5 @@
 # streamlit run main.py
+# https://crypto-ma2006b-casamonarca.streamlit.app/
 
 import json
 import sqlite3
