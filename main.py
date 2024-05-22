@@ -48,9 +48,10 @@ def main():
                     cursor.execute('''CREATE TABLE IF NOT EXISTS formularios (
                                         id INT AUTO_INCREMENT PRIMARY KEY,
                                         nombre_usuario VARCHAR(255),
+                                        fecha DATE,
+                                        genero VARCHAR(50),
                                         iv BLOB,
-                                        formulario_cifrado BLOB
-                                    )''')
+                                        formulario_cifrado BLOB)''')
                     #print("Tabla creada o ya existente.")
         
                     # Guardar los cambios en la base de datos
@@ -77,13 +78,13 @@ def main():
             return iv, ciphertext
         
         # Función para guardar el JSON cifrado en la base de datos
-        def guardar_json_cifrado(iv, ciphertext, nombre_usuario):
+        def guardar_json_cifrado(iv, ciphertext, nombre_usuario, fecha, genero):
             # Detalles de la conexión
             endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
             port = 3306
             user = "admin"
             password = "123Segurita."
-            database = "formularios"  # Reemplaza "nombre_de_tu_base_de_datos" con el nombre de tu base de datos
+            database = "formularios" 
         
             try:
                 # Establecer la conexión
@@ -101,7 +102,7 @@ def main():
         
                     # Insertar los datos en la tabla
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO formularios (nombre_usuario, iv, formulario_cifrado) VALUES (%s, %s, %s)", (nombre_usuario, iv, ciphertext))
+                    cursor.execute("INSERT INTO formularios (nombre_usuario, fecha, genero, iv, formulario_cifrado) VALUES (%s, %s, %s, %s, %s)", (nombre_usuario, fecha, genero, iv, ciphertext))
                     #print("Datos insertados correctamente.")
         
                     # Guardar los cambios en la base de datos
@@ -239,6 +240,10 @@ def main():
         
             # Recolectar datos del formulario
             nombre_usuario = st.text_input('Nombre completo')
+            fecha = datos["fecha_atencion"]
+            genero = datos["sexo"]
+            
+            
         
             datos = preguntas_cuestionario()
         
@@ -264,7 +269,7 @@ def main():
                     iv, ciphertext = cifrar_datos(datos, secret_key)
         
                     # Guardar JSON cifrado en la base de datos
-                    guardar_json_cifrado(iv, ciphertext, nombre_usuario)
+                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, fecha, genero)
         
                     # Descargar la llave privada
                     descargar_llave_privada(secret_key, nombre_usuario)
