@@ -23,16 +23,52 @@ def main():
     if option == 'Cuestionario':        
         # Función para crear la tabla si no existe
         def crear_tabla():
-            conn = sqlite3.connect('formulario.db')
-            c = conn.cursor()
-            c.execute('''CREATE TABLE IF NOT EXISTS formularios (
-                            id INTEGER PRIMARY KEY,
-                            nombre_usuario TEXT,
-                            iv BLOB,
-                            formulario_cifrado BLOB
-                        )''')
-            conn.commit()
-            conn.close()
+            # Detalles de la conexión
+            endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
+            port = 3306
+            user = "admin"
+            password = "123Segurita."
+            database = "formularios"  # Reemplaza "nombre_de_tu_base_de_datos" con el nombre de tu base de datos
+        
+            try:
+                # Establecer la conexión
+                connection = mysql.connector.connect(
+                    host=endpoint,
+                    port=port,
+                    user=user,
+                    password=password,
+                    database=database
+                )
+        
+                # Verificar si la conexión fue exitosa
+                if connection.is_connected():
+                    #print("¡Conexión exitosa!")
+        
+                    # Crear la tabla si no existe
+                    cursor = connection.cursor()
+                    cursor.execute('''CREATE TABLE IF NOT EXISTS formularios (
+                                        id INT AUTO_INCREMENT PRIMARY KEY,
+                                        nombre_usuario VARCHAR(255),
+                                        iv BLOB,
+                                        formulario_cifrado BLOB
+                                    )''')
+                    #print("Tabla creada o ya existente.")
+        
+                    # Guardar los cambios en la base de datos
+                    connection.commit()
+                    #print("Cambios guardados.")
+        
+                else:
+                    print("¡Error de conexión!")
+        
+            except mysql.connector.Error as error:
+                print("Error al conectarse a la base de datos:", error)
+        
+            finally:
+                # Cerrar la conexión
+                if 'connection' in locals() and connection.is_connected():
+                    connection.close()
+                    #print("Conexión cerrada.")
         
         # Función para cifrar datos usando AES
         def cifrar_datos(datos, secret_key):
@@ -43,11 +79,47 @@ def main():
         
         # Función para guardar el JSON cifrado en la base de datos
         def guardar_json_cifrado(iv, ciphertext, nombre_usuario):
-            conn = sqlite3.connect('formulario.db')
-            c = conn.cursor()
-            c.execute("INSERT INTO formularios (nombre_usuario, iv, formulario_cifrado) VALUES (?, ?, ?)", (nombre_usuario, iv, ciphertext,))
-            conn.commit()
-            conn.close()
+            # Detalles de la conexión
+            endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
+            port = 3306
+            user = "admin"
+            password = "123Segurita."
+            database = "formularios"  # Reemplaza "nombre_de_tu_base_de_datos" con el nombre de tu base de datos
+        
+            try:
+                # Establecer la conexión
+                connection = mysql.connector.connect(
+                    host=endpoint,
+                    port=port,
+                    user=user,
+                    password=password,
+                    database=database
+                )
+        
+                # Verificar si la conexión fue exitosa
+                if connection.is_connected():
+                    #print("¡Conexión exitosa!")
+        
+                    # Insertar los datos en la tabla
+                    cursor = connection.cursor()
+                    cursor.execute("INSERT INTO formularios (nombre_usuario, iv, formulario_cifrado) VALUES (%s, %s, %s)", (nombre_usuario, iv, ciphertext))
+                    #print("Datos insertados correctamente.")
+        
+                    # Guardar los cambios en la base de datos
+                    connection.commit()
+                    #print("Cambios guardados.")
+        
+                else:
+                    print("¡Error de conexión!")
+        
+            except mysql.connector.Error as error:
+                print("Error al conectarse a la base de datos:", error)
+        
+            finally:
+                # Cerrar la conexión
+                if 'connection' in locals() and connection.is_connected():
+                    connection.close()
+                    #print("Conexión cerrada.")
 
     
         # Función para descargar la llave privada AES
@@ -214,16 +286,51 @@ def main():
         
         # Función para obtener los datos cifrados desde la base de datos
         def obtener_datos_cifrados(nombre_usuario):
-            conn = sqlite3.connect('formulario.db')
-            c = conn.cursor()
-            c.execute("""SELECT iv, formulario_cifrado
-                      FROM formularios
-                      WHERE nombre_usuario = ?
-                      ORDER BY id DESC
-                      LIMIT 1""", (nombre_usuario,))
-            iv, encrypted_data = c.fetchone()
-            conn.close()
-            return iv, encrypted_data
+            # Detalles de la conexión
+            endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
+            port = 3306
+            user = "admin"
+            password = "123Segurita."
+            database = "formularios"  # Reemplaza "nombre_de_tu_base_de_datos" con el nombre de tu base de datos
+        
+            try:
+                # Establecer la conexión
+                connection = mysql.connector.connect(
+                    host=endpoint,
+                    port=port,
+                    user=user,
+                    password=password,
+                    database=database
+                )
+        
+                # Verificar si la conexión fue exitosa
+                if connection.is_connected():
+                    #print("¡Conexión exitosa!")
+        
+                    # Obtener los datos cifrados de la base de datos
+                    cursor = connection.cursor()
+                    cursor.execute("""SELECT iv, formulario_cifrado
+                                      FROM formularios
+                                      WHERE nombre_usuario = %s
+                                      ORDER BY id DESC
+                                      LIMIT 1""", (nombre_usuario,))
+                    iv, encrypted_data = cursor.fetchone()
+                    #print("Datos obtenidos correctamente.")
+        
+                    return iv, encrypted_data
+        
+                else:
+                    print("¡Error de conexión!")
+        
+            except mysql.connector.Error as error:
+                print("Error al conectarse a la base de datos:", error)
+                return None, None
+        
+            finally:
+                # Cerrar la conexión
+                if 'connection' in locals() and connection.is_connected():
+                    connection.close()
+                    #print("Conexión cerrada.")
         
         # Función principal para decifrar los datos
         def decifrar_y_mostrar_datos(nombre_usuario, secret_key):
