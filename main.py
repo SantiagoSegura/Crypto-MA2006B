@@ -290,7 +290,7 @@ def main():
             port = 3306
             user = "admin"
             password = "123Segurita."
-            database = "formularios"  # Reemplaza "nombre_de_tu_base_de_datos" con el nombre de tu base de datos
+            database = "formularios"
         
             try:
                 # Establecer la conexión
@@ -364,13 +364,46 @@ def main():
             st.title("Desencriptar Información")
         
             # Dropdown para seleccionar el usuario
-            conn = sqlite3.connect('formulario.db')
-            c = conn.cursor()
-            c.execute("SELECT DISTINCT nombre_usuario FROM formularios")
-            nombres_usuarios = [row[0] for row in c.fetchall()]
-            conn.close()
+            endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
+            port = 3306
+            user = "admin"
+            password = "123Segurita."
+            database = "formularios"
+            
+            try:
+                # Establecer la conexión
+                connection = mysql.connector.connect(
+                    host=endpoint,
+                    port=port,
+                    user=user,
+                    password=password,
+                    database=database
+                )
+            
+                # Verificar si la conexión fue exitosa
+                if connection.is_connected():
+                    #print("¡Conexión exitosa!")
+            
+                    # Obtener los nombres de usuario de la base de datos
+                    cursor = connection.cursor()
+                    cursor.execute("SELECT DISTINCT nombre_usuario FROM formularios")
+                    nombres_usuarios = [row[0] for row in cursor.fetchall()]
+                    #print("Nombres de usuarios obtenidos correctamente.")
+            
+                    # Cerrar la conexión
+                    connection.close()
+                    #print("Conexión cerrada.")
+            
+                else:
+                    print("¡Error de conexión!")
+            
+            except mysql.connector.Error as error:
+                print("Error al conectarse a la base de datos:", error)
+                nombres_usuarios = []
+            
+            # Crear el dropdown para seleccionar un nombre de usuario
             nombre_usuario_seleccionado = st.selectbox("Selecciona un nombre de usuario:", ["Seleccione una opción"] + nombres_usuarios)
-        
+            
             # Subir la clave secreta
             secret_key = st.file_uploader("Subir clave secreta", type="txt")
         
