@@ -483,11 +483,11 @@ def main():
             
             # Filtro de fecha
             st.sidebar.header("Filtro de Fechas")
-            fecha_inicio = st.sidebar.date_input("Fecha de inicio", value=fecha_min, min_value=fecha_min, max_value=fecha_max)
-            fecha_fin = st.sidebar.date_input("Fecha de fin", value=fecha_max, min_value=fecha_min, max_value=fecha_max)
+            fecha_inicio = st.sidebar.date_input("Fecha de inicio", value=pd.Timestamp(fecha_min).to_pydatetime(), min_value=pd.Timestamp(fecha_min).to_pydatetime(), max_value=pd.Timestamp(fecha_max).to_pydatetime())
+            fecha_fin = st.sidebar.date_input("Fecha de fin", value=pd.Timestamp(fecha_max).to_pydatetime(), min_value=pd.Timestamp(fecha_min).to_pydatetime(), max_value=pd.Timestamp(fecha_max).to_pydatetime())
             
             # Filtrar por fechas seleccionadas
-            df_filtrado = df[(df['fecha'] >= fecha_inicio) & (df['fecha'] <= fecha_fin)]
+            df_filtrado = df[(df['fecha'] >= pd.Timestamp(fecha_inicio)) & (df['fecha'] <= pd.Timestamp(fecha_fin))]
             
             # Número total de usuarios
             st.header(f"Número Total de Usuarios: {df_filtrado['nombre_usuario'].nunique()}")
