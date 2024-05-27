@@ -427,7 +427,7 @@ def main():
         if __name__ == "__main__":
             main_decrypt()
         pass
-    elif option == 'Consulta de información':
+    elif option == 'Dashboard':
         
         def obtener_dataframe_completo():
             # Datos de conexión
