@@ -27,8 +27,8 @@ def main():
         }
     </style>"""
 
-# Aplicar el estilo personalizado
-st.markdown(radio_style, unsafe_allow_html=True)
+    # Aplicar el estilo personalizado
+    st.markdown(radio_style, unsafe_allow_html=True)
     # Crear barra lateral para la selección de la opción
     link_llaves = "llaves"
     option = st.sidebar.radio(
