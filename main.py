@@ -473,6 +473,7 @@ def main():
         def crear_dashboard(df):
             st.title("Dashboard de Formularios")
             
+            df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')
             # Filtro de fecha
             st.sidebar.header("Filtro de Fechas")
             fecha_inicio = st.sidebar.date_input("Fecha de inicio", min_value=df['fecha'].min(), max_value=df['fecha'].max())
