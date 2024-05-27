@@ -55,7 +55,9 @@ def main():
                                         id INT AUTO_INCREMENT PRIMARY KEY,
                                         nombre_usuario VARCHAR(255),
                                         fecha DATE,
+                                        edad INT,
                                         genero VARCHAR(50),
+                                        tipo_poblacion VARCHAR(255),
                                         iv BLOB,
                                         formulario_cifrado BLOB)''')
                     #print("Tabla creada o ya existente.")
@@ -84,7 +86,7 @@ def main():
             return iv, ciphertext
         
         # Función para guardar el JSON cifrado en la base de datos
-        def guardar_json_cifrado(iv, ciphertext, nombre_usuario, fecha, genero):
+        def guardar_json_cifrado(iv, ciphertext, nombre_usuario, fecha_atencion,edad, genero,tipo_poblacion):
             # Detalles de la conexión
             endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
             port = 3306
@@ -108,7 +110,12 @@ def main():
         
                     # Insertar los datos en la tabla
                     cursor = connection.cursor()
-                    cursor.execute("INSERT INTO formularios (nombre_usuario, fecha, genero, iv, formulario_cifrado) VALUES (%s, %s, %s, %s, %s)", (nombre_usuario, fecha, genero, iv, ciphertext))
+                    cursor.execute("""
+                    INSERT INTO formularios 
+                    (nombre_usuario, fecha_atencion, edad, genero, tipo_poblacion, iv, formulario_cifrado) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)""",
+                                   (nombre_usuario, fecha_atencion, edad, genero, tipo_poblacion, iv, ciphertext))
+
                     #print("Datos insertados correctamente.")
         
                     # Guardar los cambios en la base de datos
@@ -271,7 +278,7 @@ def main():
                     iv, ciphertext = cifrar_datos(datos, secret_key)
         
                     # Guardar JSON cifrado en la base de datos
-                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, datos["fecha_atencion"], datos["sexo"])
+                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, datos["fecha_atencion"],datos['edad'], datos["sexo"],datos['tipo_poblacion'] )
         
                     # Descargar la llave privada
                     descargar_llave_privada(secret_key, nombre_usuario)
@@ -282,7 +289,7 @@ def main():
             main_crypt()
         
         pass
-    elif option == 'Consulta de Información':
+    elif option == 'Consulta de información':
         #
         # Función para decifrar los datos usando la clave secreta AES
         def decifrar_datos(iv, encrypted_data, secret_key):
@@ -421,6 +428,13 @@ def main():
         if __name__ == "__main__":
             main_decrypt()
         pass
+    elif option == 'Consulta de información':
+        def main_dash():
+            
+        
+        if __name__ == "__main__":
+            main_dash()
+        
 
 if __name__ == '__main__':
     main()
