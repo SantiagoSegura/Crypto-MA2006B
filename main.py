@@ -18,8 +18,12 @@ import io
 def main():
     # Crear barra lateral para la selección de la opción
     link_llaves = "llaves"
+    option = st.sidebar.radio(
+    'Selecciona una opción',
+    ('Cuestionario', 'Consulta de Información')
+    )
 
-    if st.sidebar.button('Cuestionario'):        
+    if option == 'Cuestionario':       
         # Función para crear la tabla si no existe
         def crear_tabla():
             # Detalles de la conexión
@@ -276,7 +280,7 @@ def main():
             main_crypt()
         
         pass
-    elif st.sidebar.button('Consulta de Información'):
+    elif option == 'Consulta de Información':
         #
         # Función para decifrar los datos usando la clave secreta AES
         def decifrar_datos(iv, encrypted_data, secret_key):
