@@ -17,6 +17,7 @@ from PIL import Image
 import io
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 def main():
     # Crear barra lateral para la selección de la opción
