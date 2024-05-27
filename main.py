@@ -15,6 +15,7 @@ import base64
 from Crypto.Util.Padding import unpad
 from PIL import Image
 import io
+import pandas as pd
 
 def main():
     # Crear barra lateral para la selección de la opción
