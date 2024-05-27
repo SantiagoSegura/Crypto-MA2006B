@@ -472,39 +472,47 @@ def main():
         def crear_dashboard(df):
             st.title("Dashboard de Formularios")
         
-            # Gráfico de pie para género
-            st.header("Distribución de Género")
-            genero_counts = df['genero'].value_counts()
-            fig1 = px.pie(values=genero_counts.values, names=genero_counts.index, title='Distribución de Género')
-            st.plotly_chart(fig1)
+            # Filtro de fecha
+            st.sidebar.header("Filtro de Fechas")
+            fecha_inicio = st.sidebar.date_input("Fecha de inicio", min_value=df['fecha'].min(), max_value=df['fecha'].max())
+            fecha_fin = st.sidebar.date_input("Fecha de fin", min_value=df['fecha'].min(), max_value=df['fecha'].max())
+        
+            # Filtrar por fechas seleccionadas
+            df_filtrado = df[(df['fecha'] >= fecha_inicio) & (df['fecha'] <= fecha_fin)]
+        
+            # Número total de usuarios
+            st.header(f"Número Total de Usuarios: {df_filtrado['nombre_usuario'].nunique()}")
         
             # Gráfico de líneas para número de usuarios únicos por día
             st.header("Número de Usuarios Únicos por Día")
-            df['fecha'] = pd.to_datetime(df['fecha'])
-            usuarios_por_dia = df.groupby(df['fecha'].dt.date)['nombre_usuario'].nunique().reset_index()
+            usuarios_por_dia = df_filtrado.groupby(df_filtrado['fecha'].dt.date)['nombre_usuario'].nunique().reset_index()
             usuarios_por_dia.columns = ['Fecha', 'Usuarios Únicos']
-            fig2 = px.line(usuarios_por_dia, x='Fecha', y='Usuarios Únicos', title='Número de Usuarios Únicos por Día')
-            st.plotly_chart(fig2)
+            fig1 = px.line(usuarios_por_dia, x='Fecha', y='Usuarios Únicos', title='Número de Usuarios Únicos por Día')
+            st.plotly_chart(fig1)
         
             # Gráfico de barras para edades en rangos
             st.header("Distribución de Edades")
             bins = [0, 18, 30, 40, 50, 60, 100]
             labels = ['0-18', '19-30', '31-40', '41-50', '51-60', '60+']
-            df['rango_edad'] = pd.cut(df['edad'], bins=bins, labels=labels, right=False)
-            rango_edad_counts = df['rango_edad'].value_counts().sort_index().reset_index()
+            df_filtrado['rango_edad'] = pd.cut(df_filtrado['edad'], bins=bins, labels=labels, right=False)
+            rango_edad_counts = df_filtrado['rango_edad'].value_counts().sort_index().reset_index()
             rango_edad_counts.columns = ['Rango de Edad', 'Número de Usuarios']
-            fig3 = px.bar(rango_edad_counts, x='Rango de Edad', y='Número de Usuarios', title='Distribución de Edades')
+            fig2 = px.bar(rango_edad_counts, x='Rango de Edad', y='Número de Usuarios', title='Distribución de Edades')
+            st.plotly_chart(fig2)
+        
+            # Gráfico de pie para género
+            st.header("Distribución de Género")
+            genero_counts = df_filtrado['genero'].value_counts()
+            fig3 = px.pie(values=genero_counts.values, names=genero_counts.index, title='Distribución de Género')
             st.plotly_chart(fig3)
         
         def main_dash():
             # Uso de las funciones
             df_formularios = obtener_dataframe_completo()
             if df_formularios is not None:
-                st.error("No esta vacio")
-                df_formularios
                 crear_dashboard(df_formularios)
             else:
-                st.error("No se pudo obtener el DataFrame.")
+                st.error("No se pudo obtener la informacion.")
             
             pass
             
