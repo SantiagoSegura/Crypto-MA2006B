@@ -469,27 +469,28 @@ def main():
                 st.error(f"Error: {err}")
                 return None
         
+
         def crear_dashboard(df):
             st.title("Dashboard de Formularios")
-        
+            
             # Filtro de fecha
             st.sidebar.header("Filtro de Fechas")
             fecha_inicio = st.sidebar.date_input("Fecha de inicio", min_value=df['fecha'].min(), max_value=df['fecha'].max())
             fecha_fin = st.sidebar.date_input("Fecha de fin", min_value=df['fecha'].min(), max_value=df['fecha'].max())
-        
+            
             # Filtrar por fechas seleccionadas
             df_filtrado = df[(df['fecha'] >= fecha_inicio) & (df['fecha'] <= fecha_fin)]
-        
+            
             # Número total de usuarios
             st.header(f"Número Total de Usuarios: {df_filtrado['nombre_usuario'].nunique()}")
-        
+            
             # Gráfico de líneas para número de usuarios únicos por día
             st.header("Número de Usuarios Únicos por Día")
             usuarios_por_dia = df_filtrado.groupby(df_filtrado['fecha'].dt.date)['nombre_usuario'].nunique().reset_index()
             usuarios_por_dia.columns = ['Fecha', 'Usuarios Únicos']
             fig1 = px.line(usuarios_por_dia, x='Fecha', y='Usuarios Únicos', title='Número de Usuarios Únicos por Día')
             st.plotly_chart(fig1)
-        
+            
             # Gráfico de barras para edades en rangos
             st.header("Distribución de Edades")
             bins = [0, 18, 30, 40, 50, 60, 100]
@@ -499,12 +500,13 @@ def main():
             rango_edad_counts.columns = ['Rango de Edad', 'Número de Usuarios']
             fig2 = px.bar(rango_edad_counts, x='Rango de Edad', y='Número de Usuarios', title='Distribución de Edades')
             st.plotly_chart(fig2)
-        
-            # Gráfico de pie para género
+            
+            # Gráfico de pie para distribución de género
             st.header("Distribución de Género")
             genero_counts = df_filtrado['genero'].value_counts()
             fig3 = px.pie(values=genero_counts.values, names=genero_counts.index, title='Distribución de Género')
             st.plotly_chart(fig3)
+
         
         def main_dash():
             # Uso de las funciones
