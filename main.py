@@ -470,14 +470,21 @@ def main():
                 return None
         
 
+        
         def crear_dashboard(df):
             st.title("Dashboard de Formularios")
             
-            df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')
+            # Convertir la columna 'fecha' a tipo datetime
+            df['fecha'] = pd.to_datetime(df['fecha'], errors='coerce')  # 'coerce' maneja los errores de conversión
+            
+            # Obtener fechas mínima y máxima del DataFrame
+            fecha_min = df['fecha'].min()
+            fecha_max = df['fecha'].max()
+            
             # Filtro de fecha
             st.sidebar.header("Filtro de Fechas")
-            fecha_inicio = st.sidebar.date_input("Fecha de inicio", min_value=df['fecha'].min(), max_value=df['fecha'].max())
-            fecha_fin = st.sidebar.date_input("Fecha de fin", min_value=df['fecha'].min(), max_value=df['fecha'].max())
+            fecha_inicio = st.sidebar.date_input("Fecha de inicio", value=fecha_min, min_value=fecha_min, max_value=fecha_max)
+            fecha_fin = st.sidebar.date_input("Fecha de fin", value=fecha_max, min_value=fecha_min, max_value=fecha_max)
             
             # Filtrar por fechas seleccionadas
             df_filtrado = df[(df['fecha'] >= fecha_inicio) & (df['fecha'] <= fecha_fin)]
