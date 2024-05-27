@@ -503,6 +503,8 @@ def main():
             # Uso de las funciones
             df_formularios = obtener_dataframe_formulario()
             if df_formularios is not None:
+                st.error("No esta vacio")
+                df_formularios
                 crear_dashboard(df_formularios)
             else:
                 st.error("No se pudo obtener el DataFrame.")
