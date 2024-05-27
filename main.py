@@ -16,6 +16,19 @@ from PIL import Image
 import io
 
 def main():
+    radio_style = """
+    <style>
+    div.stRadio > div:nth-child(1) > label > div:nth-child(1) > span > div > div {
+        border-color: #3182bd !important;
+        background-color: #3182bd !important;
+        }
+    div.stRadio > div:nth-child(1) > label > div:nth-child(1) > span > div > div::after {
+        background-color: white !important;
+        }
+    </style>"""
+
+# Aplicar el estilo personalizado
+st.markdown(radio_style, unsafe_allow_html=True)
     # Crear barra lateral para la selección de la opción
     link_llaves = "llaves"
     option = st.sidebar.radio(
