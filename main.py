@@ -21,10 +21,10 @@ def main():
     div.stRadio > div:nth-child(1) > label > div:nth-child(1) > span > div > div {
         border-color: #3182bd !important;
         background-color: #3182bd !important;
-        }
+    }
     div.stRadio > div:nth-child(1) > label > div:nth-child(1) > span > div > div::after {
         background-color: white !important;
-        }
+    }
     </style>"""
 
     # Aplicar el estilo personalizado
