@@ -429,26 +429,42 @@ def main():
         pass
     elif option == 'Consulta de información':
         
-        def obtener_dataframe_formulario():
+        def obtener_dataframe_completo():
+            # Datos de conexión
+            endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
+            port = 3306
+            user = "admin"
+            password = "123Segurita."
+            database = "formularios"
+            
             try:
+                # Establecer la conexión
                 connection = mysql.connector.connect(
-                    host="usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com",
-                    port=3306,
-                    user="admin",
-                    password="123Segurita.",
-                    database="formularios")
-        
-            if connection.is_connected():
-                print("¡Conexión exitosa!")
-                df = pd.read_sql("SELECT * FROM formularios", connection)
-                connection.close()
-                return df
-            else:
-                print("No se pudo conectar a la base de datos.")
-                return None
+                    host=endpoint,
+                    port=port,
+                    user=user,
+                    password=password,
+                    database=database
+                )
+                
+                # Verificar si la conexión fue exitosa
+                if connection.is_connected():
+                    print("¡Conexión exitosa!")
+                    
+                    # Consultar toda la tabla
+                    query = "SELECT * FROM formularios"
+                    df = pd.read_sql(query, connection)
+                    
+                    # Cerrar la conexión
+                    connection.close()
+                    
+                    return df
+                else:
+                    print("No se pudo conectar a la base de datos.")
+                    return None
             except mysql.connector.Error as err:
-            print(f"Error: {err}")
-            return None
+                print(f"Error: {err}")
+                return None
             
         def crear_dashboard(df):
             st.title("Dashboard de Formularios")
