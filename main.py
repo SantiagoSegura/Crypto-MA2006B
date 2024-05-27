@@ -112,15 +112,14 @@ def main():
                     cursor = connection.cursor()
                     cursor.execute("""
                     INSERT INTO formularios 
-                    (nombre_usuario, fecha_atencion, edad, genero, tipo_poblacion, iv, formulario_cifrado) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)""",
-                                   (nombre_usuario, fecha_atencion, edad, genero, tipo_poblacion, iv, ciphertext))
+                    (nombre_usuario, fecha, genero, iv, formulario_cifrado, edad, tipo_poblacion) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)""", (nombre_usuario, fecha_atencion, genero, iv, ciphertext, edad, tipo_poblacion))
 
-                    #print("Datos insertados correctamente.")
+                    print("Datos insertados correctamente.")
         
                     # Guardar los cambios en la base de datos
                     connection.commit()
-                    #print("Cambios guardados.")
+                    print("Cambios guardados.")
         
                 else:
                     print("¡Error de conexión!")
@@ -278,7 +277,7 @@ def main():
                     iv, ciphertext = cifrar_datos(datos, secret_key)
         
                     # Guardar JSON cifrado en la base de datos
-                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, datos["fecha_atencion"],datos['edad'], datos["sexo"],datos['tipo_poblacion'] )
+                    guardar_json_cifrado(iv, ciphertext, nombre_usuario, datos["fecha_atencion"],datos['edad'], datos["sexo"],datos['tipo_poblacion'])
         
                     # Descargar la llave privada
                     descargar_llave_privada(secret_key, nombre_usuario)
