@@ -429,7 +429,7 @@ def main():
         pass
     elif option == 'Dashboard':
         
-        def obtener_dataframe_completo():
+        def obtener_dataframe_formulario():
             # Datos de conexión
             endpoint = "usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com"
             port = 3306
