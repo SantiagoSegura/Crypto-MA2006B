@@ -16,6 +16,7 @@ from Crypto.Util.Padding import unpad
 from PIL import Image
 import io
 import pandas as pd
+import matplotlib.pyplot as plt
 
 def main():
     # Crear barra lateral para la selección de la opción
