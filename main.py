@@ -269,7 +269,7 @@ def main():
                 # Validar que no haya respuestas vacías o "Selecciona una opción"
                 if any(value == 'Selecciona una opción' or value == '' for value in datos.values()):
                     st.error("Falta información. Por favor complete todas las preguntas.")
-                #else:
+                else:
                     # Generar clave secreta AES
                     secret_key = get_random_bytes(32)
         
@@ -283,8 +283,6 @@ def main():
                     descargar_llave_privada(secret_key, nombre_usuario)
         
                     st.write("¡Formulario enviado y llave privada descargada!")
-                else:
-                    pass
         
         if __name__ == '__main__':
             main_crypt()
