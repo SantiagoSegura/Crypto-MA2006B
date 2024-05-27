@@ -21,7 +21,7 @@ def main():
     link_llaves = "llaves"
     with st.sidebar:
         option = option_menu(
-        menu_title = "Menu",
+        menu_title = "M",
         options = ['Cuestionario', 'Consulta de información', 'Dashboard'] 
     )
 
