@@ -430,8 +430,8 @@ def main():
         pass
     elif option == 'Consulta de información':
         def main_dash():
+            pass
             
-        
         if __name__ == "__main__":
             main_dash()
         
