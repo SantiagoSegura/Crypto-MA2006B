@@ -428,7 +428,69 @@ def main():
             main_decrypt()
         pass
     elif option == 'Consulta de información':
+        
+        def obtener_dataframe_formulario():
+            try:
+                connection = mysql.connector.connect(
+                    host="usersview.cbyy8g222bry.us-east-2.rds.amazonaws.com",
+                    port=3306,
+                    user="admin",
+                    password="123Segurita.",
+                    database="formularios")
+        
+            if connection.is_connected():
+                print("¡Conexión exitosa!")
+                df = pd.read_sql("SELECT * FROM formularios", connection)
+                connection.close()
+                return df
+            else:
+                print("No se pudo conectar a la base de datos.")
+                return None
+            except mysql.connector.Error as err:
+            print(f"Error: {err}")
+            return None
+            
+        def crear_dashboard(df):
+            st.title("Dashboard de Formularios")
+        
+            # Gráfico de pie para género
+            st.header("Distribución de Género")
+            genero_counts = df['genero'].value_counts()
+            fig1, ax1 = plt.subplots()
+            ax1.pie(genero_counts, labels=genero_counts.index, autopct='%1.1f%%', startangle=90)
+            ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            st.pyplot(fig1)
+        
+            # Gráfico de líneas para número de usuarios únicos por día
+            st.header("Número de Usuarios Únicos por Día")
+            df['fecha'] = pd.to_datetime(df['fecha'])
+            usuarios_por_dia = df.groupby(df['fecha'].dt.date)['nombre_usuario'].nunique()
+            fig2, ax2 = plt.subplots()
+            ax2.plot(usuarios_por_dia.index, usuarios_por_dia.values)
+            ax2.set_xlabel('Fecha')
+            ax2.set_ylabel('Número de Usuarios Únicos')
+            st.pyplot(fig2)
+        
+            # Gráfico de barras para edades en rangos
+            st.header("Distribución de Edades")
+            bins = [0, 18, 30, 40, 50, 60, 100]
+            labels = ['0-18', '19-30', '31-40', '41-50', '51-60', '60+']
+            df['rango_edad'] = pd.cut(df['edad'], bins=bins, labels=labels, right=False)
+            rango_edad_counts = df['rango_edad'].value_counts().sort_index()
+            fig3, ax3 = plt.subplots()
+            ax3.bar(rango_edad_counts.index, rango_edad_counts.values)
+            ax3.set_xlabel('Rango de Edad')
+            ax3.set_ylabel('Número de Usuarios')
+            st.pyplot(fig3)
+            
         def main_dash():
+            # Uso de las funciones
+            df_formularios = obtener_dataframe_formulario()
+            if df_formularios is not None:
+                crear_dashboard(df_formularios)
+            else:
+                st.error("No se pudo obtener el DataFrame.")
+            
             pass
             
         if __name__ == "__main__":
