@@ -452,7 +452,7 @@ def main():
                 
                 # Verificar si la conexión fue exitosa
                 if connection.is_connected():
-                    st.info("¡Conexión exitosa!")
+                    #st.info("¡Conexión exitosa!")
                     
                     # Consultar toda la tabla
                     query = "SELECT * FROM formularios"
