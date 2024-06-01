@@ -64,11 +64,11 @@ def login():
                 menu_title="Menu",
                 options=opciones_menu
             )
+            main()
             if st.button("Cerrar sesión"):
                 st.session_state.logged_in = False
                 st.session_state.rol = None
                 st.experimental_rerun()
-                main()
 
 
 def main():
