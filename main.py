@@ -19,14 +19,65 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+
+USUARIOS = {
+    "admin": {"password": "admin123", "rol": "jerarquia_mayor"},
+    "user2": {"password": "password2", "rol": "jerarquia_media"},
+    "user3": {"password": "password3", "rol": "jerarquia_menor"}
+}
+
+def verificar_credenciales(username, password):
+    if username in USUARIOS and USUARIOS[username]["password"] == password:
+        return USUARIOS[username]["rol"]
+    return None
+
+def login():
+        # Crear barra lateral para la selección de la opción
+        # Variable de sesión para el estado de inicio de sesión
+    if 'logged_in' not in st.session_state:
+        st.session_state.logged_in = False
+        st.session_state.rol = None
+
+    # Mostrar formulario de inicio de sesión si no está logueado
+    if not st.session_state.logged_in:
+        st.title("Inicio de Sesión")
+        username = st.text_input("Nombre de usuario")
+        password = st.text_input("Contraseña", type="password")
+        if st.button("Iniciar sesión"):
+            rol = verificar_credenciales(username, password)
+            if rol:
+                st.session_state.logged_in = True
+                st.session_state.rol = rol
+                st.session_state.username = username
+                st.success("Inicio de sesión exitoso")
+            else:
+                st.error("Nombre de usuario o contraseña incorrectos")
+    else:
+        # Crear barra lateral para la selección de la opción
+        with st.sidebar:
+            opciones_menu = ['Cuestionario']
+            if st.session_state.rol in ["jerarquia_mayor", "jerarquia_media"]:
+                opciones_menu.extend(['Consulta de información', 'Dashboard'])
+            if st.session_state.rol == "jerarquia_mayor":
+                opciones_menu.append('Administrar usuarios')
+            option = option_menu(
+                menu_title="Menu",
+                options=opciones_menu
+            )
+            if st.button("Cerrar sesión"):
+                st.session_state.logged_in = False
+                st.session_state.rol = None
+                st.experimental_rerun()
+                main()
+
+
 def main():
-    # Crear barra lateral para la selección de la opción
-    link_llaves = "llaves"
-    with st.sidebar:
-        option = option_menu(
-        menu_title = "Menu",
-        options = ['Cuestionario', 'Consulta de información', 'Dashboard'] 
-    )
+    #link_llaves = "llaves"
+    #with st.sidebar:
+    #    option = option_menu(
+    #    menu_title = "Menu",
+    #    options = ['Cuestionario', 'Consulta de información', 'Dashboard'] 
+    #)
 
     if option == 'Cuestionario':       
         # Función para crear la tabla si no existe
@@ -525,10 +576,22 @@ def main():
                 st.error("No se pudo obtener la informacion.")
             
             pass
+
+    elif option == 'Administrar usuarios':
+        st.header("Administrar usuarios")
+
+        # Mostrar lista de usuarios y permitir cambiar su rol
+        usuario_seleccionado = st.selectbox("Seleccionar usuario", list(USUARIOS.keys()))
+        nuevo_rol = st.selectbox("Seleccionar nuevo rol", ["jerarquia_mayor", "jerarquia_media", "jerarquia_menor"])
             
+        if st.button("Actualizar rol"):
+            if usuario_seleccionado in USUARIOS:
+                USUARIOS[usuario_seleccionado]["rol"] = nuevo_rol
+                st.success(f"Rol de {usuario_seleccionado} actualizado a {nuevo_rol}")
+                
         if __name__ == "__main__":
             main_dash()
         
 
 if __name__ == '__main__':
-    main()
+    login()
