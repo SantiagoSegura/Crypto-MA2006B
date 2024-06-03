@@ -2,22 +2,19 @@
 # https://crypto-ma2006b-casamonarca.streamlit.app/
 
 import json
-import sqlite3
-import mysql.connector
 from Crypto.Cipher import AES
 from Crypto.Util.Padding import pad
 from Crypto.Random import get_random_bytes
 import streamlit as st
 from streamlit_option_menu import option_menu
 from datetime import datetime
-import os
 import base64
 from Crypto.Util.Padding import unpad
 from PIL import Image
 import io
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.express as px
+import mysql.connector
 
 
 # Función genérica para establecer conexión a la base de datos
